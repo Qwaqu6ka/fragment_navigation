@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.OptionsFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/beginGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/optionsContainer"
+        style="@style/Form"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+        app:layout_constraintStart_toEndOf="@id/beginGuideLine"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/formHintTextView"
+            style="@style/FormHintTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/options"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectTextView"
+            style="@style/HintTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_the_number_of_boxes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/formHintTextView" />
+
+        <Spinner
+            android:id="@+id/boxCountSpinner"
+            style="@style/Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectTextView" />
+
+        <CheckBox
+            android:id="@+id/enableTimerCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/enable_timer"
+            app:layout_constraintBottom_toBottomOf="@id/boxCountSpinner"
+            app:layout_constraintStart_toEndOf="@id/boxCountSpinner"
+            app:layout_constraintTop_toTopOf="@id/boxCountSpinner" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@id/confirm_button"
+        app:layout_constraintStart_toStartOf="@id/optionsContainer"
+        app:layout_constraintTop_toBottomOf="@id/optionsContainer" />
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        app:layout_constraintEnd_toEndOf="@id/optionsContainer"
+        app:layout_constraintStart_toEndOf="@id/cancel_button"
+        app:layout_constraintTop_toTopOf="@id/cancel_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
