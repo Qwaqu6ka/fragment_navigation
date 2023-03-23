@@ -23,14 +23,10 @@ class OptionsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         options =
             savedInstanceState?.getParcelable(KEY_OPTIONS) ?: arguments?.getParcelable(ARG_OPTIONS)
-                    ?: throw java.lang.IllegalStateException("You need to specify options to run this fragment")
+                    ?: throw IllegalStateException("You have to specify options to run this fragment")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOptionsBinding.inflate(inflater, container, false)
 
         setupSpinner()

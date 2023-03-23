@@ -14,6 +14,7 @@
         android:src="@drawable/box" />
 
     <TextView
+        android:id="@+id/boxName"
         style="@style/HintTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
