@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fragmentnavigation.BuildConfig
+import com.example.fragmentnavigation.R
+import com.example.fragmentnavigation.contract.HasCustomTitle
 import com.example.fragmentnavigation.contract.navigator
 import com.example.fragmentnavigation.databinding.FragmentAboutBinding
 
-class AboutFragment : Fragment() {
+class AboutFragment : Fragment(), HasCustomTitle {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,4 +26,6 @@ class AboutFragment : Fragment() {
     private fun onOkPressed() {
         navigator().goBack()
     }
+
+    override fun getTitleRes(): Int = R.string.about
 }

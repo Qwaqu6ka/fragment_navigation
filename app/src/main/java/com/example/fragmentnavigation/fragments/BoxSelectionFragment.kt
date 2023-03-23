@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.fragmentnavigation.Options
 import com.example.fragmentnavigation.R
+import com.example.fragmentnavigation.contract.HasCustomTitle
 import com.example.fragmentnavigation.contract.navigator
 import com.example.fragmentnavigation.databinding.BoxItemBinding
 import com.example.fragmentnavigation.databinding.FragmentBoxSelectionBinding
@@ -17,7 +18,7 @@ import java.lang.Long.max
 import kotlin.properties.Delegates
 import kotlin.random.Random
 
-class BoxSelectionFragment : Fragment() {
+class BoxSelectionFragment : Fragment(), HasCustomTitle {
 
     private lateinit var options: Options
     private lateinit var binding: FragmentBoxSelectionBinding
@@ -67,6 +68,8 @@ class BoxSelectionFragment : Fragment() {
         timerHandler?.onSaveInstanceState(outState)
     }
 
+    override fun getTitleRes(): Int = R.string.select_box
+
     private fun createBoxes() {
         val boxBindings = (0 until options.boxCount).map { index ->
             val boxBinding = BoxItemBinding.inflate(layoutInflater)
@@ -108,6 +111,7 @@ class BoxSelectionFragment : Fragment() {
                 override fun onTick(millisUntilFinished: Long) {
                     updateTimerUI()
                 }
+
                 override fun onFinish() {
                     updateTimerUI()
                     showTimerEndDialog()

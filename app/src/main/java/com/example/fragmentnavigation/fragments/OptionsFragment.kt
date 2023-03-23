@@ -10,10 +10,13 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import com.example.fragmentnavigation.Options
 import com.example.fragmentnavigation.R
+import com.example.fragmentnavigation.contract.CustomAction
+import com.example.fragmentnavigation.contract.HasCustomAction
+import com.example.fragmentnavigation.contract.HasCustomTitle
 import com.example.fragmentnavigation.contract.navigator
 import com.example.fragmentnavigation.databinding.FragmentOptionsBinding
 
-class OptionsFragment : Fragment() {
+class OptionsFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
     private lateinit var binding: FragmentOptionsBinding
     private lateinit var options: Options
@@ -47,6 +50,16 @@ class OptionsFragment : Fragment() {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_OPTIONS, options)
     }
+
+    override fun getTitleRes(): Int = R.string.options
+
+    override fun getCustomAction() = CustomAction(
+        iconRes = R.drawable.ic_done,
+        textRes = R.string.done,
+        onCustomAction = {
+            onConfirmPressed()
+        }
+    )
 
     private fun setupSpinner() {
         boxItems =

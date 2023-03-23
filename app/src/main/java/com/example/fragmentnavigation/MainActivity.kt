@@ -1,20 +1,40 @@
 package com.example.fragmentnavigation
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import com.example.fragmentnavigation.contract.Navigator
-import com.example.fragmentnavigation.contract.ResultListener
+import com.example.fragmentnavigation.contract.*
 import com.example.fragmentnavigation.databinding.ActivityMainBinding
 import com.example.fragmentnavigation.fragments.*
 
 class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val currentFragment: Fragment
+        get() = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)!!
+
+    private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(
+            fm: FragmentManager,
+            f: Fragment,
+            v: View,
+            savedInstanceState: Bundle?
+        ) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+            updateUI()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +46,23 @@ class MainActivity : AppCompatActivity(), Navigator {
                 .add(binding.fragmentContainer.id, MenuFragment())
                 .commit()
         }
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        updateUI()
+        return true
     }
 
     override fun showBoxSelectionScreen(options: Options) {
@@ -64,7 +101,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         owner: LifecycleOwner,
         listener: ResultListener<T>
     ) {
-        supportFragmentManager.setFragmentResultListener(clazz.name, owner) { key, bundle ->
+        supportFragmentManager.setFragmentResultListener(clazz.name, owner) { _, bundle ->
             listener.invoke(bundle.getParcelable(KEY_RESULT)!!)
         }
     }
@@ -74,6 +111,45 @@ class MainActivity : AppCompatActivity(), Navigator {
             .replace(binding.fragmentContainer.id, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun updateUI() {
+        val fragment = currentFragment
+
+        if (fragment is HasCustomTitle) {
+            binding.toolbar.title = getString(fragment.getTitleRes())
+        } else {
+            binding.toolbar.title = getString(R.string.default_toolbar_label)
+        }
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
+        } else {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            supportActionBar?.setDisplayShowHomeEnabled(false)
+        }
+
+        if (fragment is HasCustomAction) {
+            setToolbarCustomAction(fragment.getCustomAction())
+        } else {
+            binding.toolbar.menu.clear()
+        }
+    }
+
+    private fun setToolbarCustomAction(action: CustomAction) {
+        binding.toolbar.menu.clear()    // clear old action before set new one
+
+        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
+        iconDrawable.setTint(Color.WHITE)
+
+        val menuItem = binding.toolbar.menu.add(action.textRes)
+        menuItem.icon = iconDrawable
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menuItem.setOnMenuItemClickListener {
+            action.onCustomAction.run()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     companion object {
