@@ -26,7 +26,11 @@ class OptionsFragment : Fragment() {
                     ?: throw IllegalStateException("You have to specify options to run this fragment")
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentOptionsBinding.inflate(inflater, container, false)
 
         setupSpinner()
@@ -45,7 +49,8 @@ class OptionsFragment : Fragment() {
     }
 
     private fun setupSpinner() {
-        boxItems = (1..6).map { BoxCountItem(it, resources.getQuantityString(R.plurals.boxes, it, it)) }
+        boxItems =
+            (1..6).map { BoxCountItem(it, resources.getQuantityString(R.plurals.boxes, it, it)) }
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.item_spinner,
@@ -55,10 +60,16 @@ class OptionsFragment : Fragment() {
 
         binding.boxCountSpinner.adapter = adapter
         binding.boxCountSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val count = boxItems[position].count
                 options = options.copy(boxCount = count)
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }

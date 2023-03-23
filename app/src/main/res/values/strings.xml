@@ -19,6 +19,9 @@
     <string name="done_icon">Done icon</string>
     <string name="congratilations">Congratilations!</string>
     <string name="to_main_menu">To Main Menu</string>
+    <string name="timer_text">Timer: %1$d sec.</string>
+    <string name="the_end">The end</string>
+    <string name="timer_end_message">Oops, there is no enough time, try again.</string>
 
     <plurals name="boxes">
         <item quantity="zero">%1$d boxes</item>

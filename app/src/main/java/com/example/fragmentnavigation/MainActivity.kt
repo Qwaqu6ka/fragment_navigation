@@ -53,10 +53,17 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun <T : Parcelable> publishResult(result: T) {
-        supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(KEY_RESULT to result))
+        supportFragmentManager.setFragmentResult(
+            result.javaClass.name,
+            bundleOf(KEY_RESULT to result)
+        )
     }
 
-    override fun <T : Parcelable> listenResult(clazz: Class<T>, owner: LifecycleOwner, listener: ResultListener<T>) {
+    override fun <T : Parcelable> listenResult(
+        clazz: Class<T>,
+        owner: LifecycleOwner,
+        listener: ResultListener<T>
+    ) {
         supportFragmentManager.setFragmentResultListener(clazz.name, owner) { key, bundle ->
             listener.invoke(bundle.getParcelable(KEY_RESULT)!!)
         }

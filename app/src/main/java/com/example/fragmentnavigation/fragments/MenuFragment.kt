@@ -18,7 +18,11 @@ class MenuFragment : Fragment() {
         options = savedInstanceState?.getParcelable(KEY_OPTIONS) ?: Options.DEFAULT
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val binding = FragmentMenuBinding.inflate(inflater, container, false)
 
         navigator().listenResult(Options::class.java, viewLifecycleOwner) {
